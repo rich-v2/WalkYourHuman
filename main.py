@@ -11,6 +11,7 @@ from burger_flinger import BurgerFlinger
 from hoover import Hoover
 from citizen import Lady, Grandma, BeardedMan
 from dogs import Pug
+from donkey import Donkey
 # Environment
 from tree import Tree
 from house import House
@@ -65,6 +66,7 @@ def collision_sprite():
                 score -= 20
                 wilhelm_scream.play()
                 enemy.dead = True
+                catcher_list.add(DogCatcher())
                 return None
     if enemies_hit_human:
         for enemy in enemies_hit_human:
@@ -107,7 +109,7 @@ def collision_sprite():
                 if human_x < patty.x < human_x + width and human_y < patty.y < human_y + height:
                     human.sprite.cholesterol += 20
                     enemy.patties.pop(enemy.patties.index(patty))
-
+            for patty in enemy.patties:
                 for pug in pug_list:
                     pug_x = pug.rect.x
                     pug_y = pug.rect.y
@@ -115,7 +117,8 @@ def collision_sprite():
                     height = pug.rect.height
                     if pug_x < patty.x < pug_x + width and pug_y < patty.y < pug_y + height:
                         enemy.patties.pop(enemy.patties.index(patty))
-                        break
+                        return None
+            for patty in enemy.patties:
                 for house in house_list:
                     house_x = house.rect.x
                     house_y = house.rect.y
@@ -123,7 +126,7 @@ def collision_sprite():
                     height = house.rect.height
                     if house_x < patty.x < house_x + width and house_y < patty.y < house_y + height:
                         enemy.patties.pop(enemy.patties.index(patty))
-                        break
+                        return None
 
     house_collision(player)
     house_collision(enemy_list)
@@ -132,7 +135,7 @@ def collision_sprite():
     house_collision(sausage_list)
     house_collision(apple_list)
     for house in house_list:
-        pygame.sprite.spritecollide(house,citizen_list, dokill=True)
+        pygame.sprite.spritecollide(house, citizen_list, dokill=True)
 
 
 def house_collision(sprite_list):
@@ -169,12 +172,16 @@ def house_collision(sprite_list):
                     else:
                         character.rect.bottom = house.rect.top
 
+
 def game_over():
     global enemy_list, catcher_list, hoover, poop_list, player
     if human.sprite.dead or player.sprite.win:
         enemy_list.empty()
         catcher_list.empty()
         hoover.empty()
+        donkey_list.empty()
+        citizen_list.empty()
+        pug_list.empty()
         poop_list.empty()
         player.sprite.poop = 0
         return False
@@ -230,8 +237,16 @@ def display_stats():
     pugs_rect = pugs_surf.get_rect(topleft=(10, SCREEN_HEIGHT * 0.25))
     screen.blit(pugs_surf, pugs_rect)
 
+    if int(player.sprite.donkey) > 0:
+        donkey_color = "purple"
+    else:
+        donkey_color = "red"
+    donkey_surf = text_font.render(f"Donkey: {round(player.sprite.donkey, 4)}", False, donkey_color)
+    donkey_rect = donkey_surf.get_rect(topleft=(10, SCREEN_HEIGHT * 0.3))
+    screen.blit(donkey_surf, donkey_rect)
+
     sic_surf = text_font.render(f"Sic Timer: {player.sprite.sic_timer}", False, "black")
-    sic_rect = sic_surf.get_rect(topleft=(10, SCREEN_HEIGHT * 0.3))
+    sic_rect = sic_surf.get_rect(topleft=(10, SCREEN_HEIGHT * 0.35))
     screen.blit(sic_surf, sic_rect)
 
 
@@ -250,6 +265,7 @@ dog_panting = pygame.mixer.Sound("music/dog_panting.mp3")
 dog_howl = pygame.mixer.Sound("music/howl.mp3")
 apple_eating = pygame.mixer.Sound("music/apple_eating.mp3")
 hoover_sound = pygame.mixer.Sound("music/hoover_sound.mp3")
+donkey_sound = pygame.mixer.Sound("music/donkey-bray.mp3")
 
 # Groups
 player = pygame.sprite.GroupSingle(Player())
@@ -257,6 +273,7 @@ player = pygame.sprite.GroupSingle(Player())
 human = pygame.sprite.GroupSingle(Human())
 
 pug_list = pygame.sprite.Group()
+donkey_list = pygame.sprite.Group()
 
 enemy_list = pygame.sprite.Group()
 
@@ -355,7 +372,10 @@ while True:
                             dog_howl.play()
                             player.sprite.pugs -= 1
                             pug_list.add(Pug(player.sprite.rect.centerx, player.sprite.rect.centery))
-
+                    if event.key == pygame.K_d:
+                        if int(player.sprite.donkey) > 0:
+                            donkey_list.add(Donkey(player.sprite.rect.centerx, player.sprite.rect.centery))
+                            donkey_sound.play()
             else:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
@@ -395,6 +415,7 @@ while True:
             pug_list.update(enemy_list)
             pug_list.draw(screen)
 
+
             human.update(player)
             human.draw(screen)
             if human.sprite.cholesterol < 150:
@@ -423,6 +444,9 @@ while True:
 
             citizen_list.update(enemy_list)
             citizen_list.draw(screen)
+
+            donkey_list.update(screen, enemy_list, citizen_list)
+            donkey_list.draw(screen)
 
             collision_sprite()
 

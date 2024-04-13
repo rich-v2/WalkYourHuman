@@ -20,7 +20,9 @@ class IceVendor(pygame.sprite.Sprite):
         self.speed = 2
         self.dead = False
         self.scared = False
+        self.in_love = False
         self.scared_timer = 0
+        self.in_love_timer = 0
         self.facing = 1
         self.vertical = True
 
@@ -51,9 +53,13 @@ class IceVendor(pygame.sprite.Sprite):
             self.kill()
 
     def update(self, human, win):
-        if not self.dead:
+        if not self.dead and not self.in_love:
             self.animation_state()
             self.move_to_human(human)
+        elif self.in_love:
+            self.in_love_timer -= 0.1
+            if self.in_love_timer <= 0:
+                self.in_love = False
         else:
             self.image = pygame.image.load("assets/ice_man/ice_man-3.png")
         self.destroy()

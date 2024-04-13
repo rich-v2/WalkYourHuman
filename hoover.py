@@ -16,7 +16,7 @@ class Hoover(pygame.sprite.Sprite):
         spawn_x = SCREEN_WIDTH / 2
         spawn_y = SCREEN_HEIGHT / 2
         self.rect = self.image.get_rect(midbottom=(spawn_x, spawn_y))
-        self.hp = 50
+        self.hp = 75
         self.damage_sound = pygame.mixer.Sound("music/hoover_damaged.mp3")
 
     def animation_state(self):

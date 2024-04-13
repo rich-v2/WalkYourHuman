@@ -27,6 +27,8 @@ class BurgerFlinger(pygame.sprite.Sprite):
         self.fling_sound = pygame.mixer.Sound("music/fling_sound.mp3")
         self.scared = False
         self.speed = 2
+        self.in_love = False
+        self.in_love_timer = 0
 
     def move_to_human(self, human):
         human_x, human_y = human.sprite.rect.center
@@ -83,10 +85,14 @@ class BurgerFlinger(pygame.sprite.Sprite):
             self.kill()
 
     def update(self, human, win):
-        if not self.dead:
+        if not self.dead and not self.in_love:
             self.animation_state()
             self.move_to_human(human)
             self.fling(win)
+        elif self.in_love:
+            self.in_love_timer -= 0.1
+            if self.in_love_timer <= 0:
+                self.in_love = False
         else:
             self.image = pygame.image.load("assets/burger_flinger/burgerFlinger-3.png")
         self.destroy()

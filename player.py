@@ -7,6 +7,7 @@ MAX_DISTANCE = 150
 BASE_SPEED = 4
 SIC_TIME = 100
 
+
 class Player(pygame.sprite.Sprite):
 
     def __init__(self):
@@ -27,8 +28,9 @@ class Player(pygame.sprite.Sprite):
         self.sic_sound = pygame.mixer.Sound("music/dog_snarl.mp3")
         self.caught = False
         self.caught_timer = 0
-        self.poop = 0
+        self.poop = 2
         self.pugs = 0
+        self.donkey = 0
         self.win = False
 
     def distance_human(self, human):
@@ -97,9 +99,12 @@ class Player(pygame.sprite.Sprite):
                 self.sic_timer = 0
 
     def call_animal_companions(self):
-        self.pugs += 0.01
-        if self.pugs > 5:
-            self.pugs = 5
+        self.pugs += 0.005
+        if self.pugs > 2:
+            self.pugs = 2
+        self.donkey += 0.0001
+        if self.donkey > 1:
+            self.donkey = 1
 
     def update(self, human, enemy_group):
         self.animation_state()
