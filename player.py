@@ -30,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.caught_timer = 0
         self.poop = 2
         self.pugs = 0
-        self.donkey = 0
+        self.donkey = 1
         self.win = False
 
     def distance_human(self, human):
@@ -102,9 +102,6 @@ class Player(pygame.sprite.Sprite):
         self.pugs += 0.005
         if self.pugs > 2:
             self.pugs = 2
-        self.donkey += 0.0001
-        if self.donkey > 1:
-            self.donkey = 1
 
     def update(self, human, enemy_group):
         self.animation_state()

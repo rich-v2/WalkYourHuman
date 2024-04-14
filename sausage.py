@@ -9,9 +9,10 @@ class Sausage(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        sausage_1 = pygame.image.load("assets/sausage/sausage-1.png")
-        sausage_2 = pygame.image.load("assets/sausage/sausage-2.png")
-
+        sausage_1 = pygame.image.load("assets/sausage/sausage-1.png").convert_alpha()
+        sausage_1 = pygame.transform.rotozoom(sausage_1, 0, 1.5)
+        sausage_2 = pygame.image.load("assets/sausage/sausage-2.png").convert_alpha()
+        sausage_2 = pygame.transform.rotozoom(sausage_2, 0, 1.5)
         self.frames = [sausage_1, sausage_2]
         self.index = 0
 

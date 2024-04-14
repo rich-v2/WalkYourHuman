@@ -116,8 +116,11 @@ def collision_sprite():
                     width = pug.rect.width
                     height = pug.rect.height
                     if pug_x < patty.x < pug_x + width and pug_y < patty.y < pug_y + height:
-                        enemy.patties.pop(enemy.patties.index(patty))
-                        return None
+                        try:
+                            enemy.patties.pop(enemy.patties.index(patty))
+                        except ValueError:
+                            pass
+
             for patty in enemy.patties:
                 for house in house_list:
                     house_x = house.rect.x
@@ -125,8 +128,10 @@ def collision_sprite():
                     width = house.rect.width
                     height = house.rect.height
                     if house_x < patty.x < house_x + width and house_y < patty.y < house_y + height:
-                        enemy.patties.pop(enemy.patties.index(patty))
-                        return None
+                        try:
+                            enemy.patties.pop(enemy.patties.index(patty))
+                        except ValueError:
+                            pass
 
     house_collision(player)
     house_collision(enemy_list)
@@ -184,6 +189,8 @@ def game_over():
         pug_list.empty()
         poop_list.empty()
         player.sprite.poop = 0
+        player.sprite.pugs = 0
+        player.sprite.donkey = 1
         return False
     return True
 
@@ -265,7 +272,6 @@ dog_panting = pygame.mixer.Sound("music/dog_panting.mp3")
 dog_howl = pygame.mixer.Sound("music/howl.mp3")
 apple_eating = pygame.mixer.Sound("music/apple_eating.mp3")
 hoover_sound = pygame.mixer.Sound("music/hoover_sound.mp3")
-donkey_sound = pygame.mixer.Sound("music/donkey-bray.mp3")
 
 # Groups
 player = pygame.sprite.GroupSingle(Player())
@@ -374,8 +380,12 @@ while True:
                             pug_list.add(Pug(player.sprite.rect.centerx, player.sprite.rect.centery))
                     if event.key == pygame.K_d:
                         if int(player.sprite.donkey) > 0:
+                            player.sprite.donkey -= 1
                             donkey_list.add(Donkey(player.sprite.rect.centerx, player.sprite.rect.centery))
-                            donkey_sound.play()
+                            for _ in range(10):
+                                spawn_x = player.sprite.rect.centerx + random.randint(-200, 200)
+                                spawn_y = player.sprite.rect.centery + random.randint(-200, 200)
+                                poop_list.add(Poop((spawn_x, spawn_y)))
             else:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:

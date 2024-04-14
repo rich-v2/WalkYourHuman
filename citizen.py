@@ -26,6 +26,7 @@ class Citizen(pygame.sprite.Sprite):
         self.direction = 6
         self.move_dir = random.choice([1, 2, 3, 4])
         self.in_love = False
+        self.in_love_timer = 0
 
     def animation_state(self):
         self.index += 0.1
@@ -90,7 +91,9 @@ class Citizen(pygame.sprite.Sprite):
                     self.direction *= -1
                 break
         if self.in_love:
-            pass
+            self.in_love_timer -= 0.1
+            if self.in_love_timer <= 0:
+                self.in_love = False
         elif not self.scared:
             self.move()
         else:

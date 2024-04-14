@@ -9,8 +9,10 @@ class Apple(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        apple_1 = pygame.image.load("assets/apple/apple-1.png")
-        apple_2 = pygame.image.load("assets/apple/apple-2.png")
+        apple_1 = pygame.image.load("assets/apple/apple-1.png").convert_alpha()
+        apple_1 = pygame.transform.rotozoom(apple_1, 0, 1.5)
+        apple_2 = pygame.image.load("assets/apple/apple-2.png").convert_alpha()
+        apple_2 = pygame.transform.rotozoom(apple_2, 0, 1.5)
 
         self.frames = [apple_1, apple_2]
         self.index = 0
