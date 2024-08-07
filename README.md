@@ -1,5 +1,13 @@
 # WalkYourHuman
 
+## Installation
+
+I could not be bothered to make an executable, so you'll have to install Python and the pygame module using
+
+`pip install pygame`
+
+Sorry!
+
 ## Aim of the Game
 
 Keep your human alive and defeat the final boss.
