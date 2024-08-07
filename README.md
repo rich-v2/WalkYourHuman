@@ -1,12 +1,14 @@
 # WalkYourHuman
 
-## Installation
+## Installation & Launch
 
 I could not be bothered to make an executable, so you'll have to install Python and the pygame module using
 
 `pip install pygame`
 
 Sorry!
+
+You may start the game by executing the `main.py` file.
 
 ## Aim of the Game
 
