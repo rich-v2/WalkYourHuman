@@ -8,8 +8,8 @@ SCREEN_HEIGHT = 800
 
 class DogCatcher(IceVendor):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, player):
+        super().__init__(player)
         catcher_1 = pygame.image.load("assets/dog_catcher/dog_catcher-1.png")
         catcher_2 = pygame.image.load("assets/dog_catcher/dog_catcher-2.png")
 

@@ -66,7 +66,7 @@ def collision_sprite():
                 score -= 20
                 wilhelm_scream.play()
                 enemy.dead = True
-                catcher_list.add(DogCatcher())
+                catcher_list.add(DogCatcher(player))
                 return None
     if enemies_hit_human:
         for enemy in enemies_hit_human:
@@ -86,7 +86,7 @@ def collision_sprite():
         for apple in human_ate_apple:
             apple_eating.play()
             apple.kill()
-            change_cholesterol(amount=10)
+            change_cholesterol(amount=-10)
             if human.sprite.speed < MAX_SPEED:
                 human.sprite.speed += 0.1
 
@@ -198,10 +198,10 @@ def game_over():
 def increase_speed(enemy_list):
     if current_time > 200:
         for enemy in enemy_list:
-            enemy.speed = 3
+            enemy.speed = 2
     elif current_time > 300:
         for enemy in enemy_list:
-            enemy.speed = 4
+            enemy.speed = 3
 
 
 def check_death(sprt_list):
@@ -311,7 +311,7 @@ for house in house_list:
     pygame.sprite.spritecollide(house, tree_list, dokill= True)
 
 enemy_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(enemy_timer, 2000)
+pygame.time.set_timer(enemy_timer, 3000)
 
 catcher_timer = pygame.USEREVENT + 2
 pygame.time.set_timer(catcher_timer, 10000)
@@ -342,12 +342,12 @@ while True:
             if game_on:
                 if event.type == enemy_timer:
                     if random.randint(0, 3) <= 2:
-                        enemy_list.add(IceVendor())
+                        enemy_list.add(IceVendor(player)) 
                     else:
                         enemy_list.add(BurgerFlinger())
                 if event.type == catcher_timer:
                     if current_time < 0:
-                        catcher_list.add(DogCatcher())
+                        catcher_list.add(DogCatcher(player))
                 if event.type == cholesterol_timer:
                     change_cholesterol(-1)
                 if event.type == apple_timer:
@@ -388,17 +388,18 @@ while True:
                                 poop_list.add(Poop((spawn_x, spawn_y)))
             else:
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
+                    if event.key == pygame.K_RETURN:
                         human.sprite.dead = False
                         human.sprite.cholesterol = 150
                         start_time = pygame.time.get_ticks()
                         score = 0
                         game_on = True
                         pygame.mixer.music.load("music/a-little-quirky-167769.mp3")
+                        hoover_sound.stop()
                         pygame.mixer.music.play()
         else:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_RETURN:
                     game_over()
                     human.sprite.dead = False
                     human.sprite.cholesterol = 150
@@ -487,7 +488,7 @@ while True:
             human_rect = human_surf.get_rect(midtop=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 5) * 2))
             screen.blit(human_surf, human_rect)
 
-            play_again_surf = text_font.render(f" Your final score is {current_time}. Press 'Space' to Play Again", False, "white")
+            play_again_surf = text_font.render(f" Your final score is {current_time}. Press 'Enter' to Play Again", False, "white")
             play_again_rect = play_again_surf.get_rect(midtop=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 5) * 4))
             screen.blit(play_again_surf, play_again_rect)
     else:
@@ -503,7 +504,7 @@ while True:
         winner2_surf = pygame.transform.rotozoom(winner2_surf, 0, 4)
         winner2_rect = winner2_surf.get_rect(midtop=(3 * SCREEN_WIDTH / 5, 2 * SCREEN_HEIGHT / 5))
 
-        play_again_surf = text_font.render(f" Your final score is {current_time}. Press 'Space' to Play Again", False,
+        play_again_surf = text_font.render(f" Your final score is {current_time}. Press 'Enter' to Play Again", False,
                                            "white")
         play_again_rect = play_again_surf.get_rect(midtop=(SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 5) * 4))
 

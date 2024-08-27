@@ -6,7 +6,7 @@ SCREEN_HEIGHT = 800
 
 class IceVendor(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, player):
         super().__init__()
         human_1 = pygame.image.load('assets/ice_man/ice_man-1.png').convert_alpha()
         human_2 = pygame.image.load('assets/ice_man/ice_man-2.png').convert_alpha()
@@ -14,10 +14,17 @@ class IceVendor(pygame.sprite.Sprite):
         self.stand_frames = [human_1, human_2]
         self.stand_index = 0
         self.image = self.stand_frames[self.stand_index]
-        self.rect = self.image.get_rect(midbottom=(random.randint(0, SCREEN_WIDTH),
-                                                   random.randint(0, SCREEN_HEIGHT)))
+        spawn_x = random.randint(0, SCREEN_WIDTH)
+        spawn_y = random.randint(0, SCREEN_HEIGHT)
+        if abs(spawn_x - player.sprite.rect.x) < 50:
+            spawn_x = player.sprite.rect.x + (-1)**random.randint(0,1) * 100
+        if abs(spawn_y - player.sprite.rect.y) < 50:
+            spawn_x = player.sprite.rect.y + (-1)**random.randint(0,1) * 100
+
+        self.rect = self.image.get_rect(midbottom=(spawn_x,
+                                                   spawn_y))
         self.time = 100
-        self.speed = 2
+        self.speed = 1
         self.dead = False
         self.scared = False
         self.in_love = False
