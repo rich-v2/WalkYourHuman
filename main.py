@@ -31,6 +31,8 @@ current_time = 0
 first_death = True
 music_playing = "quirky"
 
+track_list = ["a-little-quirky-167769", "asimov-142110", "sinnesloschen-beam-117362"]
+
 
 def change_cholesterol(amount=1):
     """Change human cholesterol by amount and print change next to human on screen."""
@@ -196,12 +198,14 @@ def game_over():
 
 
 def increase_speed(enemy_list):
-    if current_time > 200:
+    if current_time > 100:
         for enemy in enemy_list:
-            enemy.speed = 2
-    elif current_time > 300:
+            if enemy.speed > 0:
+                enemy.speed = 2
+    elif current_time > 200:
         for enemy in enemy_list:
-            enemy.speed = 3
+            if enemy.speed > 0:
+                enemy.speed = 3
 
 
 def check_death(sprt_list):
@@ -265,7 +269,7 @@ background_surf = pygame.image.load("assets/background.png")
 clock = pygame.time.Clock()
 text_font = pygame.font.Font("font/Pixeltype.ttf", 50)
 
-pygame.mixer.music.load("music/a-little-quirky-167769.mp3")
+pygame.mixer.music.load(f"music/{track_list[random.randint(0,len(track_list)-1)]}.mp3")
 pygame.mixer.music.play(loops=-1)
 wilhelm_scream = pygame.mixer.Sound("music/wilhelm.mp3")
 dog_panting = pygame.mixer.Sound("music/dog_panting.mp3")
@@ -394,7 +398,7 @@ while True:
                         start_time = pygame.time.get_ticks()
                         score = 0
                         game_on = True
-                        pygame.mixer.music.load("music/a-little-quirky-167769.mp3")
+                        pygame.mixer.music.load(f"music/{track_list[random.randint(0,len(track_list)-1)]}.mp3")
                         hoover_sound.stop()
                         pygame.mixer.music.play()
         else:
@@ -407,9 +411,9 @@ while True:
                     score = 0
                     game_on = True
                     player.sprite.win = False
-                    pygame.mixer.music.load("music/a-little-quirky-167769.mp3")
+                    pygame.mixer.music.load(f"music/{track_list[random.randint(0,len(track_list)-1)]}.mp3")
                     hoover_sound.stop()
-                    pygame.mixer.music.play()
+                    pygame.mixer.music.play(loops=-1)
     if not player.sprite.win:
         if game_on:
             if human.sprite.cholesterol < 100:
@@ -474,8 +478,8 @@ while True:
                         all_alive = False
                 if all_alive:
                     first_death = True
-                    pygame.mixer.music.load("music/a-little-quirky-167769.mp3")
-                    pygame.mixer.music.play()
+                    pygame.mixer.music.load(f"music/{track_list[random.randint(0,len(track_list)-1)]}.mp3")
+                    pygame.mixer.music.play(loops=-1)
                     music_playing = "quirky"
         else:
             screen.fill("black")
