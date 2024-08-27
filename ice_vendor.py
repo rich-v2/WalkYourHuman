@@ -17,9 +17,9 @@ class IceVendor(pygame.sprite.Sprite):
         spawn_x = random.randint(0, SCREEN_WIDTH)
         spawn_y = random.randint(0, SCREEN_HEIGHT)
         if abs(spawn_x - player.sprite.rect.x) < 50:
-            spawn_x = player.sprite.rect.x + (-1)**random.randint(0,1) * 100
+            spawn_x = player.sprite.rect.x + (-1)**random.randint(1,2) * 100
         if abs(spawn_y - player.sprite.rect.y) < 50:
-            spawn_x = player.sprite.rect.y + (-1)**random.randint(0,1) * 100
+            spawn_x = player.sprite.rect.y + (-1)**random.randint(1,2) * 100
 
         self.rect = self.image.get_rect(midbottom=(spawn_x,
                                                    spawn_y))
